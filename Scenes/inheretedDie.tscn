@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://6l4tg2a3qsh4"]
+
+[ext_resource type="PackedScene" uid="uid://c2t6xndhxg4k" path="res://Scenes/die.tscn" id="1_0dw06"]
+
+[node name="Die" instance=ExtResource("1_0dw06")]

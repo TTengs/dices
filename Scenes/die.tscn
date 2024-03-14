@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2t6xndhxg4k"]
+
+[ext_resource type="Script" path="res://scripts/die.gd" id="1_6pr6h"]
+[ext_resource type="PackedScene" uid="uid://cbn7vcpyipn76" path="res://assets/dice/die.glb" id="2_b2iun"]
+[ext_resource type="PackedScene" uid="uid://dsnfjs3mo73e3" path="res://Scenes/die_raycast.tscn" id="3_0uvd5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2jxyu"]
+size = Vector3(2, 2, 2)
+
+[node name="Die" type="RigidBody3D"]
+mass = 1.5
+gravity_scale = 2.0
+freeze = true
+script = ExtResource("1_6pr6h")
+
+[node name="die" parent="." instance=ExtResource("2_b2iun")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_2jxyu")
+
+[node name="Raycasts" type="Node3D" parent="."]
+
+[node name="DieRaycast1" parent="Raycasts" instance=ExtResource("3_0uvd5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+target_position = Vector3(0, -0.2, 0)
+collide_with_areas = true
+opposite_side = 6
+
+[node name="DieRaycast2" parent="Raycasts" instance=ExtResource("3_0uvd5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+target_position = Vector3(-0.2, 0, 0)
+collide_with_areas = true
+opposite_side = 5
+
+[node name="DieRaycast3" parent="Raycasts" instance=ExtResource("3_0uvd5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+target_position = Vector3(0, 0, -0.2)
+collide_with_areas = true
+opposite_side = 4
+
+[node name="DieRaycast4" parent="Raycasts" instance=ExtResource("3_0uvd5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+target_position = Vector3(0, 0, 0.2)
+collide_with_areas = true
+opposite_side = 3
+
+[node name="DieRaycast5" parent="Raycasts" instance=ExtResource("3_0uvd5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+target_position = Vector3(0.2, 0, 0)
+collide_with_areas = true
+opposite_side = 2
+
+[node name="DieRaycast6" parent="Raycasts" instance=ExtResource("3_0uvd5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(0, 0.2, 0)
+collide_with_areas = true
+opposite_side = 1
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="sleeping_state_changed" from="." to="." method="_on_sleeping_state_changed"]

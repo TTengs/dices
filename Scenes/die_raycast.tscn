@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsnfjs3mo73e3"]
+
+[ext_resource type="Script" path="res://scripts/die_raycast.gd" id="1_ywrip"]
+
+[node name="DieRaycast" type="RayCast3D"]
+target_position = Vector3(0, -0.1, 0)
+hit_from_inside = true
+script = ExtResource("1_ywrip")

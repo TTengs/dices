@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://csmy3ai5aaib4"]
+
+[ext_resource type="Script" path="res://Scenes/gamemodes/spaceman_manager.gd" id="1_3gm40"]
+
+[node name="Spaceman" type="Node3D"]
+script = ExtResource("1_3gm40")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 200.0
+offset_top = 488.0
+offset_right = 375.0
+offset_bottom = 566.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KeyLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Key: "
+
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PointsLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Points:"
+
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/HBoxContainer" to="." method="_on_h_box_container_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/VBoxContainer/HBoxContainer" to="." method="_on_h_box_container_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_mouse_exited"]
