@@ -1,11 +1,5 @@
 extends Node
 
-@onready var key1 = $CanvasLayer/VBoxContainer/HBoxContainer/Label2
-@onready var key2 = $CanvasLayer/VBoxContainer/HBoxContainer/Label3
-@onready var point1 = $CanvasLayer/VBoxContainer/HBoxContainer2/Label2
-@onready var point2 = $CanvasLayer/VBoxContainer/HBoxContainer2/Label3
-@onready var point3 = $CanvasLayer/VBoxContainer/HBoxContainer2/Label4
-
 @onready var win_screen = $SpacemanWin
 
 var Die = preload("res://Scenes/die.tscn")  # Replace with the path to your dice.gd script
@@ -16,8 +10,13 @@ var any_die_rolling
 var picked_up_die = null
 var game_camera = null
 
-var is_mouse_on_key = false
-var is_mouse_on_points = false
+var is_mouse_on_slot1 = false
+var is_mouse_on_slot2 = false
+var is_mouse_on_point1 = false
+var is_mouse_on_point2 = false
+var is_mouse_on_point3 = false
+
+var dice_slot = null
 
 var key = 0
 var point = 0
@@ -27,6 +26,11 @@ var points_are_chosen = false
 
 var has_chosen_die = true
 
+# List to check if 2 keys have been chosen, maybe refactor to allow for moving them in the future.
+var key_list = []
+var points_list = []
+
+signal die_selected(side_up, dice_slot)
 signal dice_chosen(points)
 
 func _on_die_roll_finished(value):
@@ -64,7 +68,7 @@ func _input(event):
 			has_chosen_die = false
 
 func _process(_delta):
-	if picked_up_die && game_camera:
+	if picked_up_die && game_camera: 
 		var mouse_pos = get_viewport().get_mouse_position()
 		var ray_origin = game_camera.project_ray_origin(mouse_pos)
 		var ray_direction = game_camera.project_ray_normal(mouse_pos)
@@ -85,60 +89,86 @@ func _on_pickup_die(die, camera):
 func _on_drop_die(die):
 	picked_up_die = null
 	
-	# If dice is dropped on key, display this and remove the die
-	if (is_mouse_on_key && !key_is_chosen):
-		if (key1.text == ""):
-			key1.text = str(die.side_up)
-			dice.erase(die)
-			die.queue_free()
-			has_chosen_die = true
-		else:
-			key2.text = str(die.side_up)
-			dice.erase(die)
-			die.queue_free()
-			has_chosen_die = true
-			key_is_chosen = true
+	#TODO Kan måske lige slås sammen????
+	if (is_mouse_on_slot1 && key_list.size() < 2):
+		die_selected.emit(die.side_up, dice_slot)
+		#Add key dice to the key list
+		key_list.append(die.side_up)
+		print(key_list)
+		dice.erase(die)
+		die.queue_free()
+		has_chosen_die = true
+	if (is_mouse_on_slot2 && key_list.size() < 2):
+		die_selected.emit(die.side_up, dice_slot)
+		key_list.append(die.side_up)
+		dice.erase(die)
+		die.queue_free()
+		has_chosen_die = true
 	
 	# If dice is dropped on points, display this and remove die
-	if (is_mouse_on_points && !points_are_chosen):
-		if (point1.text == ""):
-			point1.text = str(die.side_up)
-			dice.erase(die)
-			die.queue_free()
-			has_chosen_die = true
-		elif (point2.text == ""):
-			point2.text = str(die.side_up)
-			dice.erase(die)
-			die.queue_free()
-			has_chosen_die = true
-		else:
-			point3.text = str(die.side_up)
-			dice.erase(die)
-			die.queue_free()
-			has_chosen_die = true
-			points_are_chosen = true
+	if (is_mouse_on_point1 && points_list.size() < 3):
+		die_selected.emit(die.side_up, dice_slot)
+		#Add key dice to the points list
+		points_list.append(die.side_up)
+		print(points_list)
+		dice.erase(die)
+		die.queue_free()
+		has_chosen_die = true
+	elif (is_mouse_on_point2 && points_list.size() < 3):
+		die_selected.emit(die.side_up, dice_slot)
+		points_list.append(die.side_up)
+		dice.erase(die)
+		die.queue_free()
+		has_chosen_die = true
+	elif (is_mouse_on_point3 && points_list.size() < 3):
+		die_selected.emit(die.side_up, dice_slot)
+		points_list.append(die.side_up)
+		dice.erase(die)
+		die.queue_free()
+		has_chosen_die = true
 
 func _no_more_dice():
-	if (key_is_chosen && points_are_chosen):
-		if ((int(key1.text) == 1  && int(key2.text) == 3) || (int(key1.text) == 3 && int(key2.text) == 1)):
-			print("You have key")
-			var total_points = int(point1.text) + int(point2.text) + int(point3.text)
-			print(total_points)
-			win_screen.show()
-			dice_chosen.emit(total_points)
-		else:
-			print("You no have key")
-			win_screen.show()
-			dice_chosen.emit(0)
+	# Add all numbers in the key list and check if they add up to 4
+	if (key_list.has(1) && key_list.has(3)):
+		# Add all numbers in the points list
+		var total_points = points_list[0] + points_list[1] + points_list[2]
+		win_screen.show()
+		dice_chosen.emit(total_points)
+	else:
+		win_screen.show()
+		dice_chosen.emit(0)
 
-func _on_h_box_container_mouse_entered():
-	is_mouse_on_key = true
+func _on_dice_slot_mouse_entered_panel(slot):
+	is_mouse_on_slot1 = true
+	dice_slot = slot
 
-func _on_h_box_container_mouse_exited():
-	is_mouse_on_key = false
+func _on_dice_slot_mouse_exited_panel():
+	is_mouse_on_slot1 = false
 
-func _on_h_box_container_2_mouse_entered():
-	is_mouse_on_points = true
+func _on_dice_slot_2_mouse_entered_panel(slot):
+	is_mouse_on_slot2 = true
+	dice_slot = slot
 
-func _on_h_box_container_2_mouse_exited():
-	is_mouse_on_points = false
+func _on_dice_slot_2_mouse_exited_panel():
+	is_mouse_on_slot2 = false
+
+func _on_point_dice_slot_mouse_entered_panel(slot):
+	is_mouse_on_point1 = true
+	dice_slot = slot
+
+func _on_point_dice_slot_mouse_exited_panel():
+	is_mouse_on_point1 = false
+
+func _on_point_dice_slot_2_mouse_entered_panel(slot):
+	is_mouse_on_point2 = true
+	dice_slot = slot
+
+func _on_point_dice_slot_2_mouse_exited_panel():
+	is_mouse_on_point2 = false
+
+func _on_point_dice_slot_3_mouse_entered_panel(slot):
+	is_mouse_on_point3 = true
+	dice_slot = slot
+
+func _on_point_dice_slot_3_mouse_exited_panel():
+	is_mouse_on_point3 = false

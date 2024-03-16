@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2t6xndhxg4k"]
+[gd_scene load_steps=6 format=3 uid="uid://c2t6xndhxg4k"]
 
 [ext_resource type="Script" path="res://scripts/die.gd" id="1_6pr6h"]
 [ext_resource type="PackedScene" uid="uid://cbn7vcpyipn76" path="res://assets/dice/die.glb" id="2_b2iun"]
 [ext_resource type="PackedScene" uid="uid://dsnfjs3mo73e3" path="res://Scenes/die_raycast.tscn" id="3_0uvd5"]
+[ext_resource type="AudioStream" uid="uid://kljyionjnyun" path="res://assets/sounds/dice_hit.wav" id="4_3ywxp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2jxyu"]
 size = Vector3(2, 2, 2)
@@ -11,6 +12,8 @@ size = Vector3(2, 2, 2)
 mass = 1.5
 gravity_scale = 2.0
 freeze = true
+max_contacts_reported = 1
+contact_monitor = true
 script = ExtResource("1_6pr6h")
 
 [node name="die" parent="." instance=ExtResource("2_b2iun")]
@@ -56,5 +59,10 @@ target_position = Vector3(0, 0.2, 0)
 collide_with_areas = true
 opposite_side = 1
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_3ywxp")
+volume_db = -15.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="sleeping_state_changed" from="." to="." method="_on_sleeping_state_changed"]

@@ -12,6 +12,8 @@ var force_to_center = 10  # Adjust as needed
 
 var side_up = 0
 
+var velocity_sound = 1
+
 signal roll_finished(value)
 signal pickup_die(die, camera)
 signal drop_die(die)
@@ -67,8 +69,12 @@ func _apply_force_to_center():
 
 func _on_input_event(camera, event, _position, _normal, _shape_idx):
 	if (event.is_action_pressed("select")):
-		print("I clicky")
 		pickup_die.emit(self, camera)
 	elif (event.is_action_released("select")):
-		print("I release you")
 		drop_die.emit(self)
+
+
+
+func _on_body_entered(body):
+	if abs(self.linear_velocity.length()) > velocity_sound:
+		$AudioStreamPlayer.play()

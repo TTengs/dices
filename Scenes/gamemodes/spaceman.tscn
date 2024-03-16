@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://csmy3ai5aaib4"]
+[gd_scene load_steps=4 format=3 uid="uid://csmy3ai5aaib4"]
 
 [ext_resource type="Script" path="res://scripts/gamemodes/spaceman_manager.gd" id="1_yuyp5"]
+[ext_resource type="PackedScene" uid="uid://c28xwskemisnb" path="res://Scenes/dice_slot/dice_slot.tscn" id="2_we27j"]
 [ext_resource type="PackedScene" uid="uid://b5vs6nbsn3xgc" path="res://Scenes/gamemodes/spaceman_win.tscn" id="2_yx2kp"]
 
 [node name="Spaceman" type="Node3D"]
@@ -21,10 +22,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Key: "
 
-[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+[node name="DiceSlot" parent="CanvasLayer/VBoxContainer/HBoxContainer" instance=ExtResource("2_we27j")]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer"]
+[node name="DiceSlot2" parent="CanvasLayer/VBoxContainer/HBoxContainer" instance=ExtResource("2_we27j")]
 layout_mode = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
@@ -34,19 +35,30 @@ layout_mode = 2
 layout_mode = 2
 text = "Points:"
 
-[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+[node name="PointDiceSlot" parent="CanvasLayer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_we27j")]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+[node name="PointDiceSlot2" parent="CanvasLayer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_we27j")]
 layout_mode = 2
 
-[node name="Label4" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+[node name="PointDiceSlot3" parent="CanvasLayer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_we27j")]
 layout_mode = 2
 
 [node name="SpacemanWin" parent="." instance=ExtResource("2_yx2kp")]
 
 [connection signal="dice_chosen" from="." to="SpacemanWin" method="_on_spaceman_dice_chosen"]
-[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/HBoxContainer" to="." method="_on_h_box_container_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/VBoxContainer/HBoxContainer" to="." method="_on_h_box_container_mouse_exited"]
-[connection signal="mouse_entered" from="CanvasLayer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/VBoxContainer/HBoxContainer2" to="." method="_on_h_box_container_2_mouse_exited"]
+[connection signal="die_selected" from="." to="CanvasLayer/VBoxContainer/HBoxContainer/DiceSlot" method="_on_spaceman_die_selected"]
+[connection signal="die_selected" from="." to="CanvasLayer/VBoxContainer/HBoxContainer/DiceSlot2" method="_on_spaceman_die_selected"]
+[connection signal="die_selected" from="." to="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot" method="_on_spaceman_die_selected"]
+[connection signal="die_selected" from="." to="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot2" method="_on_spaceman_die_selected"]
+[connection signal="die_selected" from="." to="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot3" method="_on_spaceman_die_selected"]
+[connection signal="mouse_entered_panel" from="CanvasLayer/VBoxContainer/HBoxContainer/DiceSlot" to="." method="_on_dice_slot_mouse_entered_panel"]
+[connection signal="mouse_exited_panel" from="CanvasLayer/VBoxContainer/HBoxContainer/DiceSlot" to="." method="_on_dice_slot_mouse_exited_panel"]
+[connection signal="mouse_entered_panel" from="CanvasLayer/VBoxContainer/HBoxContainer/DiceSlot2" to="." method="_on_dice_slot_2_mouse_entered_panel"]
+[connection signal="mouse_exited_panel" from="CanvasLayer/VBoxContainer/HBoxContainer/DiceSlot2" to="." method="_on_dice_slot_2_mouse_exited_panel"]
+[connection signal="mouse_entered_panel" from="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot" to="." method="_on_point_dice_slot_mouse_entered_panel"]
+[connection signal="mouse_exited_panel" from="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot" to="." method="_on_point_dice_slot_mouse_exited_panel"]
+[connection signal="mouse_entered_panel" from="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot2" to="." method="_on_point_dice_slot_2_mouse_entered_panel"]
+[connection signal="mouse_exited_panel" from="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot2" to="." method="_on_point_dice_slot_2_mouse_exited_panel"]
+[connection signal="mouse_entered_panel" from="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot3" to="." method="_on_point_dice_slot_3_mouse_entered_panel"]
+[connection signal="mouse_exited_panel" from="CanvasLayer/VBoxContainer/HBoxContainer2/PointDiceSlot3" to="." method="_on_point_dice_slot_3_mouse_exited_panel"]

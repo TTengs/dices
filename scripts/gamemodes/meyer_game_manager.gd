@@ -2,7 +2,6 @@ extends Node
 
 @onready var result_label = $CanvasLayer/Label
 @onready var last_scores = $CanvasLayer/RichTextLabel
-@onready var life_label = $CanvasLayer/Life
 
 var Die = preload("res://Scenes/die.tscn")  # Replace with the path to your dice.gd script
 var dice = []
@@ -16,6 +15,10 @@ var game_camera = null
 var is_mouse_on_health = false
 
 var life = 0
+
+var dice_slot = null
+
+signal die_selected(side_up, dice_slot)
 
 func _on_die_roll_finished(value):
 #Make array that stores the values emmitted from the function
@@ -89,10 +92,9 @@ func _on_drop_die(die):
 	picked_up_die = null
 	
 	# If dice is dropped on health, display this and remove the die
-	print("life " + str(life))
 	if (is_mouse_on_health && life == 0):
 		life = die.side_up
-		life_label.text = str(die.side_up)
+		die_selected.emit(die.side_up, dice_slot)
 		dice.erase(die)
 		die.queue_free()
 
@@ -100,4 +102,13 @@ func _on_panel_mouse_entered():
 	is_mouse_on_health = true
 
 func _on_panel_mouse_exited():
+	is_mouse_on_health = false
+
+
+
+func _on_dice_slot_mouse_entered_panel(slot):
+	is_mouse_on_health = true
+	dice_slot = slot
+
+func _on_dice_slot_mouse_exited_panel():
 	is_mouse_on_health = false
